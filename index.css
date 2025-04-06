@@ -1,0 +1,150 @@
+.header-container {
+  display: flex;
+  background-color: rgb(77, 97, 158);
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-text {
+  color: white
+}
+
+.tab-text {
+  list-style: none; /* Remove default list styling */
+}
+
+.tab-text a {
+  color: white; 
+  text-decoration: none; 
+  font-size: 20px;
+}
+
+.tab-text a:hover {
+  color: blue; 
+  font-size: 20px;
+}
+
+.tabs-container {
+  display: flex;
+  list-style: none;
+  gap: 5rem;
+}
+
+.background {
+  background-image: url('assets/image.png'); 
+  background-size: cover; 
+  background-position: center
+}
+
+.center-heading {
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 75px
+
+}
+
+.center-title {
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 40px
+}
+
+.position-text {
+  color: white;
+  font-size: 30px;
+}
+  
+.card {
+    width: 1000px;
+    background-color: rgb(77, 97, 158);
+    border-radius: 30px;
+    text-align: center;
+}
+
+.si-card {
+  width: 100px;
+  background-color: red;
+  border-radius: 20px;
+  text-align: center;
+  height: 35px; 
+  position: relative;
+}
+
+.align {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+}
+
+.file-card1 {
+  display: flex;
+  width: 200px;
+  background-color: white;
+  border-radius: 20px;
+  text-align: center;
+  height: 200px; 
+}
+
+.buttonContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.button {
+  padding: 0;
+  border-radius: 1000px;
+  border: 1px solid #ccc;
+  background: #f0f0f0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  aspect-ratio: 1 / 1;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  position: relative;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: monospace;
+}
+
