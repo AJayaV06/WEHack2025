@@ -1,19 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header.jsx';
-import Analytics from './components/Analytics.jsx';
-import Docs from './components/Docs.jsx';
-import SignIn from './components/SignIn.jsx';
 
 function App() {
   return (
     <div className='background'>
-      <Router>
-        <Header />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <div>
+      <Header></Header>
+      <div>
                 <h1 className='center-heading'>
                   FinDocs
                 </h1>
@@ -44,13 +35,7 @@ function App() {
                   </div>
                 </div>
               </div>
-            }
-          />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/docs" element={<Docs />} />
-          <Route path="/signin" element={<SignIn />} />
-        </Routes>
-      </Router>
+              
     </div>
   );
 }
