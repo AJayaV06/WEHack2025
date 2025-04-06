@@ -4,7 +4,9 @@ function Header() {
   return (
     <header className="header-container">
       <div>
-        <h1 className= 'header-text'>FinDocs</h1>
+      <h1 className='header-text'>
+    <Link to="/">FinDocs</Link>
+      </h1>
       </div>
       <ul className="tabs-container">
         <li className= 'tab-text'><Link to="/">Home</Link></li>
