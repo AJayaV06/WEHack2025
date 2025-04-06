@@ -1,68 +1,81 @@
 import React, { useState } from 'react';
-import './Chatbot.css';
+import './Docs.css'; // Make sure this CSS file exists
 
-function Chatbot() {
-    const [messages, setMessages] = useState([]);
-    const [inputValue, setInputValue] = useState('');
+const Docs = () => {
+    const [geminiMessages, setGeminiMessages] = useState([]);
+    const [geminiInputText, setGeminiInputText] = useState('');
+    const [geminiLoading, setGeminiLoading] = useState(false);
+    const [contextText, setContextText] = useState('');
 
-    const handleInputChange = (event) => {
-        setInputValue(event.target.value);
+    const handleGeminiInputChange = (event) => {
+        setGeminiInputText(event.target.value);
     };
 
-    const handleSendMessage = () => {
-        if (inputValue.trim()) {
-            const newUserMessage = { text: inputValue, sender: 'user' };
-            setMessages(prevMessages => [...prevMessages, newUserMessage]);
+    const handleContextChange = (event) => {
+        setContextText(event.target.value);
+    };
 
-            // Simulate bot typing
-            setMessages(prevMessages => [...prevMessages, { text: '...', sender: 'bot', isTyping: true }]);
+    const handleGeminiSendMessage = async () => {
+        if (!geminiInputText.trim()) return;
 
-            // Replace this with your actual chatbot logic (e.g., API call to Gemini)
-            setTimeout(() => {
-                // Remove typing indicator
-                setMessages(prevMessages => prevMessages.filter(msg => !msg.isTyping));
+        const newMessage = { text: geminiInputText, sender: 'user' };
+        setGeminiMessages([...geminiMessages, newMessage]);
+        setGeminiInputText('');
+        setGeminiLoading(true);
 
-                let botResponseText = '';
-                const userMessageLower = inputValue.toLowerCase();
+        try {
+            const response = await fetch('http://localhost:5000/api/gemini-finance', { // Adjust URL if needed
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question: geminiInputText, context: contextText }),
+            });
 
-                // Simple example of more conversational responses
-                if (userMessageLower.includes('hello') || userMessageLower.includes('hi')) {
-                    botResponseText = Math.random() < 0.5 ? 'Hello there!' : 'Hi! How can I help you today?';
-                } else if (userMessageLower.includes('financial advice')) {
-                    botResponseText = "Okay, I understand you're asking for financial advice. While I can provide general information, I'm not a certified financial advisor. What specific area are you interested in today?";
-                } else if (userMessageLower.includes('data') && userMessageLower.includes('suggest')) {
-                    botResponseText = "Thanks for providing the data. To give you the best suggestions, could you tell me a bit more about what the data represents and what your goals are?";
-                } else {
-                    botResponseText = `That's an interesting question. Let me think... (Real answer based on your logic will go here for: "${inputValue}")`;
-                }
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-                const botResponse = { text: botResponseText, sender: 'bot' };
-                setMessages(prevMessages => [...prevMessages, botResponse]);
-            }, 1000); // Simulate processing time
-            setInputValue('');
+            const data = await response.json();
+            const botMessage = { text: data.response, sender: 'gemini' };
+            setGeminiMessages([...geminiMessages, botMessage]);
+        } catch (error) {
+            console.error('Error fetching Gemini response:', error);
+            setGeminiMessages([...geminiMessages, { text: 'Error getting response from Gemini.', sender: 'gemini', error: true }]);
+        } finally {
+            setGeminiLoading(false);
         }
     };
 
     return (
-        <div className="chatbot-container">
-            <div className="chatbot-messages">
-                {messages.map((msg, index) => (
-                    <div key={index} className={`message ${msg.sender} ${msg.isTyping ? 'typing' : ''}`}>
-                        {msg.text}
+        <div className="docs-container">
+            <h2 className="center-title">Finance Question Chatbot</h2>
+
+            <div className="chat-display">
+                {geminiMessages.map((msg, index) => (
+                    <div key={index} className={`message ${msg.sender}`}>
+                        <strong>{msg.sender === 'user' ? 'You:' : 'Gemini:'}</strong> {msg.text}
+                        {msg.error && <span className="error">(Error)</span>}
                     </div>
                 ))}
+                {geminiLoading && <div className="message bot"><strong>Gemini:</strong> Thinking...</div>}
             </div>
-            <div className="chatbot-input">
-                <input
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    placeholder="Ask a question or enter data..."
+            <div className="input-area">
+                <textarea
+                    placeholder="Enter finance question for Gemini"
+                    value={geminiInputText}
+                    onChange={handleGeminiInputChange}
                 />
-                <button onClick={handleSendMessage}>Send</button>
+                <textarea
+                    placeholder="Optional context text for Gemini to use"
+                    value={contextText}
+                    onChange={handleContextChange}
+                    className="context-input"
+                />
+                <button onClick={handleGeminiSendMessage} disabled={geminiLoading}>Send to Gemini</button>
             </div>
         </div>
     );
-}
+};
 
-export default Chatbot;
+export default Docs;
