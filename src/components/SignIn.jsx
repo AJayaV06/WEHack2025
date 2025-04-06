@@ -1,10 +1,13 @@
 // src/components/SignIn.jsx
 import React, { useState } from 'react';
+import Header from './Header.jsx';
+import { useNavigate } from 'react-router-dom';
 import '../index.css'; // Ensure you have CSS for styling
 
 function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -12,8 +15,13 @@ function SignIn() {
         console.log('Sign In submitted:', { email, password });
     };
 
+    const handleClick = () => {
+        navigate('/'); 
+      };
+
     return (
         <div className="background">
+            <Header></Header>
             <div className="align">
                 <div className="card" style={{ width: '400px' }}>
                     <h2 className="center-title">Sign In</h2>
@@ -42,7 +50,14 @@ function SignIn() {
                                 required
                             />
                         </div>
-                        <button type="submit" className="button" style={{ width: '100%', padding: '10px' }}>Sign In</button>
+                        <button
+                            type="submit"
+                            className="button"
+                            style={{ width: '100%', padding: '10px' }}
+                            onClick={handleClick}
+                        >
+                        Sign In
+                        </button>
                     </form>
                 </div>
             </div>
